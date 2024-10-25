@@ -1,9 +1,13 @@
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    document.title = "Smart Water Heater Controller";
+  }, []);
+
   return (
-    <><title>Smart Water Heater Controller</title><div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
