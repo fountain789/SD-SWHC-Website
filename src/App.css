@@ -24,6 +24,20 @@
   color: white;
 }
 
+.hide{
+  display: none;
+  background-color:#282c34;
+  border-radius: 5px;
+  text-align: center;
+  position: absolute;
+  mardin: 0 auto;
+}
+
+.al-txt{
+  top: 60%;
+  left: 10%;
+}
+
 .App-link {
   color: #61dafb;
 }
