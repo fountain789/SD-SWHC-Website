@@ -10,6 +10,7 @@ function App() {
      $(".hide").hide();
 
       $(".al").click(function(){
+        console.log("Alabama clicked");
         $(".al-txt").toggle();
      });
     }, []);
