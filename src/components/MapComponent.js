@@ -54,7 +54,7 @@ const MapComponent = () => {
   
   const handleStateClick = (event, geo) => {
     console.log("geo.properties:", geo.properties); // Debugging line
-    const stateCode = geo.properties.STUSPS || geo.properties.name || geo.properties.state || geo.properties.STATE_ABBR; 
+    const stateCode = geo.properties.STUSPS || geo.properties.name /*|| geo.properties.state || geo.properties.STATE_ABBR*/; 
     console.log("State clicked:", stateCode); // Debugging line
     setSelectedState(stateCode);
     setTooltipPosition({ x: event.clientX + 15, y: event.clientY + 15 });
