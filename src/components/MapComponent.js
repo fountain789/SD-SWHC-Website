@@ -1,4 +1,3 @@
-// MapComponent.js
 import React, { useState, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { database, get, ref } from "./firebase.js";
@@ -53,9 +52,9 @@ const MapComponent = () => {
   
   
   const handleStateClick = (event, geo) => {
-    console.log("geo.properties:", geo.properties); // Debugging line
+    console.log("geo.properties:", geo.properties);
     const stateCode = geo.properties.STUSPS || geo.properties.name || geo.properties.state || geo.properties.STATE_ABBR; 
-    console.log("State clicked:", stateCode); // Debugging line
+    console.log("State clicked:", stateCode);
     setSelectedState(stateCode);
     setTooltipPosition({ x: event.clientX + 15, y: event.clientY + 15 });
   };
