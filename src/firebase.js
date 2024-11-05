@@ -2,14 +2,15 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+    apiKey: "AIzaSyCw_bUWIBcoZ42BKCAScJOfO2q2KyThJ9U",
+    authDomain: "git-wh.firebaseapp.com",
+    databaseURL: "https://git-wh-default-rtdb.firebaseio.com",
+    projectId: "git-wh",
+    storageBucket: "git-wh.appspot.com",
+    messagingSenderId: "200839480102",
+    appId: "1:200839480102:web:0caa9e93cf67f1e5ad37e7",
+    measurementId: "G-8VD9FRSSSL"
+  };
 
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
