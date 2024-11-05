@@ -1,0 +1,32 @@
+/* MapComponent.css */
+.map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    padding-top: 20px;
+  }
+  
+  .map-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .tooltip {
+    position: absolute;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    pointer-events: none;
+    min-width: 80px;
+    max-width: 150px;
+    text-align: center;
+  }
+  
+  
