@@ -71,3 +71,5 @@ const stateZipRanges = {
     "WV": { min: 24701, max: 26886 },
     "WY": { min: 82001, max: 83128 },
   };
+
+  export default stateZipRanges;
