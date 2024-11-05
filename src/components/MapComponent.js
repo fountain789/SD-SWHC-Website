@@ -1,3 +1,4 @@
+// MapComponent.js
 import React, { useState, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { database, get, ref } from "./firebase.js";
@@ -29,11 +30,13 @@ const MapComponent = () => {
                 }
                 stateCounts[state].devices += 1;
                 stateCounts[state].interactions += relayInteractions;
+              } else {
+                console.warn(`No state found for zip code: ${zip}`);
               }
             }
           });
   
-          console.log("Final state data:", stateCounts);
+          console.log("Final state data:", stateCounts); // Debugging line
           setStateData(stateCounts);
         } else {
           console.log("No data available");
@@ -45,15 +48,19 @@ const MapComponent = () => {
   
     fetchData();
   }, []);
-
+  
+  
+  
+  
   const handleStateClick = (event, geo) => {
-    const stateCode = (geo.properties.STUSPS || geo.properties.name || geo.properties.state || geo.properties.STATE_ABBR)?.toUpperCase(); 
-    if (stateCode) {
-      setSelectedState(stateCode);
-      setTooltipPosition({ x: event.clientX + 15, y: event.clientY + 15 });
-    }
+    console.log("geo.properties:", geo.properties); // Debugging line
+    const stateCode = geo.properties.STUSPS || geo.properties.name || geo.properties.state || geo.properties.STATE_ABBR; 
+    console.log("State clicked:", stateCode); // Debugging line
+    setSelectedState(stateCode);
+    setTooltipPosition({ x: event.clientX + 15, y: event.clientY + 15 });
   };
-
+  
+  
   return (
     <div className="map-container">
       <h2 className="map-title">US Device Map</h2>
@@ -80,18 +87,20 @@ const MapComponent = () => {
         </Geographies>
       </ComposableMap>
       {selectedState && (
-        <div
-          className="tooltip"
-          style={{
-            left: tooltipPosition.x,
-            top: tooltipPosition.y
-          }}
-        >
-          <h3>{selectedState}</h3>
-          <p>Devices: {stateData[selectedState]?.devices ?? "N/A"}</p>
-          <p>Relay Interactions: {stateData[selectedState]?.interactions ?? "N/A"}</p>
-        </div>
-      )}
+  <div
+    className="tooltip"
+    style={{
+      left: tooltipPosition.x,
+      top: tooltipPosition.y
+    }}
+  >
+    <h3>{selectedState}</h3>
+    <p>Devices: {stateData[selectedState]?.devices ?? "N/A"}</p>
+    <p>Relay Interactions: {stateData[selectedState]?.interactions ?? "N/A"}</p>
+  </div>
+)}
+
+
     </div>
   );
 };
