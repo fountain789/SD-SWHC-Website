@@ -54,7 +54,7 @@ const MapComponent = () => {
   
   const handleStateClick = (event, geo) => {
     console.log("geo.properties:", geo.properties); // Debugging line
-    const stateCode = geo.properties.STUSPS || geo.properties.name /*|| geo.properties.state || geo.properties.STATE_ABBR*/; 
+    const stateCode = geo.properties.STUSPS || geo.properties.name || geo.properties.state || geo.properties.STATE_ABBR; 
     console.log("State clicked:", stateCode); // Debugging line
     setSelectedState(stateCode);
     setTooltipPosition({ x: event.clientX + 15, y: event.clientY + 15 });
@@ -66,8 +66,8 @@ const MapComponent = () => {
       <h2 className="map-title">US Device Map</h2>
       <ComposableMap
         projection="geoAlbersUsa"
-        width={1500}
-        height={800}
+        width={800}
+        height={500}
       >
         <Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
           {({ geographies }) =>
