@@ -72,4 +72,16 @@ const stateZipRanges = {
     "WY": { min: 82001, max: 83128 },
   };
 
+  export const getStateByZip = (zip) => {
+    for (const [state, range] of Object.entries(stateZipRanges)) {
+      if (zip >= range.min && zip <= range.max) {
+        console.log(`Zip code ${zip} matched to state: ${state}`); // Debugging line
+        return state;
+      }
+    }
+    console.warn(`No matching state found for zip code: ${zip}`);
+    return null;
+  };
+  
+  
   export default stateZipRanges;
