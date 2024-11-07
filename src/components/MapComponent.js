@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { database, get, ref } from "./firebase.js";
 import { getStateByZip } from "./stateZipRanges.js";
@@ -8,6 +8,7 @@ const MapComponent = () => {
   const [stateData, setStateData] = useState({});
   const [selectedState, setSelectedState] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const mapRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +47,19 @@ const MapComponent = () => {
     };
   
     fetchData();
+
+    // Add event listener to detect outside clicks
+    const handleClickOutside = (event) => {
+      if (mapRef.current && !mapRef.current.contains(event.target)) {
+        setSelectedState(null); // Hide the tooltip
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };   
   }, []);
   
   
@@ -61,8 +75,8 @@ const MapComponent = () => {
   
   
   return (
-    <div className="map-container">
-      <h2 className="map-title">US Device Map</h2>
+<div className="map-container">
+  <h2 className="map-title">Smart Water Heater Controller</h2>
       <ComposableMap
         projection="geoAlbersUsa"
         width={800}
@@ -77,7 +91,7 @@ const MapComponent = () => {
                 onClick={(event) => handleStateClick(event, geo)}
                 style={{
                   default: { fill: "#D6D6DA", outline: "none" },
-                  hover: { fill: "#F53", outline: "none" },
+                  hover: { fill: "#9C9C9C", outline: "none" },
                   pressed: { fill: "#E42", outline: "none" },
                 }}
               />

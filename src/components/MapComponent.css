@@ -1,3 +1,9 @@
+html, body {
+  margin: 0pt;
+  padding: 0pt;
+  background-color: #03063f;
+}
+
 .map-container {
     display: flex;
     flex-direction: column;
@@ -12,15 +18,17 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
+    color: rgb(197, 194, 194);
   }
   
   .tooltip {
     position: absolute;
-    background: white;
+    background: #373d8d; /* Dark blue or any dark color to match the theme */
+    color: #ffffff; /* White text for contrast */
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #666; /* Adjust color to match the dark theme */
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     z-index: 10;
     pointer-events: none;
     min-width: 80px;
