@@ -8,7 +8,7 @@ const MapComponent = () => {
   const [stateData, setStateData] = useState({});
   const [selectedState, setSelectedState] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const mapRef = useRef(null);
+  const mapContainerRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,8 +50,8 @@ const MapComponent = () => {
 
     // Add event listener to detect outside clicks
     const handleClickOutside = (event) => {
-      if (mapRef.current && !mapRef.current.contains(event.target)) {
-        setSelectedState(null); // Hide the tooltip
+      if (mapContainerRef.current && !mapContainerRef.current.contains(event.target)) {
+        setSelectedState(null); // Hide the tooltip when clicking outside the map
       }
     };
 
@@ -59,8 +59,15 @@ const MapComponent = () => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-    };   
+    };
   }, []);
+
+
+  const handleContainerClick = (event) => {
+    if (event.target === mapContainerRef.current) {
+      setSelectedState(null); // Hide the tooltip when clicking on the empty map space
+    }
+  };
   
   
   
@@ -75,7 +82,7 @@ const MapComponent = () => {
   
   
   return (
-<div className="map-container">
+  <div ref={mapContainerRef} className="map-container" onClick={handleContainerClick}>
   <h2 className="map-title">Smart Water Heater Controller</h2>
       <ComposableMap
         projection="geoAlbersUsa"
