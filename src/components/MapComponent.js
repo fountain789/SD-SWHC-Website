@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { database, get, ref } from "./firebase.js";
 import { getStateByZip } from "./stateZipRanges.js";
-import "./MapComponent.css";
+import "./MapComponent.css"
 
 const MapComponent = () => {
   const [stateData, setStateData] = useState({});
@@ -78,11 +78,10 @@ const MapComponent = () => {
   
   return (
     <div ref={mapContainerRef} className="map-container" onClick={handleContainerClick}>
-      <h2 className="map-title">Smart Water Heater Controller</h2>
       <ComposableMap
         projection="geoAlbersUsa"
-        width={800}
-        height={500}
+        width={1000}
+        height={600}
       >
         <Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
           {({ geographies }) =>
@@ -146,11 +145,11 @@ const MapComponent = () => {
         <h4>Legend</h4>
         <div className="legend-item">
           <span className="color-box" style={{ backgroundColor: "#FF0000" }}></span>
-          <span>Unstable Grid (High Interactions)</span>
+          <span>Unstable Grid</span>
         </div>
         <div className="legend-item">
           <span className="color-box" style={{ backgroundColor: "#00FF00" }}></span>
-          <span>Stable Grid (Devices Active)</span>
+          <span>Active Devices</span>
         </div>
         <div className="legend-item">
           <span className="color-box" style={{ backgroundColor: "#D6D6DA" }}></span>

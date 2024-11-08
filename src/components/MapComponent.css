@@ -6,24 +6,14 @@ html, body {
 
 .map-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* Aligns items at the top */
+  align-items: center;
   width: 100%;
-  height: 90vh;
-  padding-top: 20px;
+  height: 80vh;
 }
 
 .map-section {
   position: relative; /* Ensures the tooltip stays above the map */
   flex-grow: 1; /* Makes the map take up available space */
-}
-
-.map-title {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-  color: rgb(197, 194, 194);
 }
 
 .tooltip {
@@ -42,17 +32,18 @@ html, body {
 }
 
 .map-legend {
-  width: 200px; /* Adjust the width as needed */
+  width: fit-content;
   padding: 10px;
-  background-color: #fff;
+  background-color: #9f9fa2;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-left: 20px; /* Space between map and legend */
+  margin-right: 5%;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
+  text-align: center;
   margin-bottom: 10px;
 }
 
