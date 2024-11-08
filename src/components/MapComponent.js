@@ -36,7 +36,7 @@ const MapComponent = () => {
             }
           });
   
-          console.log("Final state data:", stateCounts); // Debugging line
+          console.log("Final state data:", stateCounts); 
           setStateData(stateCounts);
         } else {
           console.log("No data available");
@@ -51,7 +51,7 @@ const MapComponent = () => {
     // Add event listener to detect outside clicks
     const handleClickOutside = (event) => {
       if (mapContainerRef.current && !mapContainerRef.current.contains(event.target)) {
-        setSelectedState(null); // Hide the tooltip when clicking outside the map
+        setSelectedState(null); 
       }
     };
 
@@ -65,7 +65,7 @@ const MapComponent = () => {
 
   const handleContainerClick = (event) => {
     if (event.target === mapContainerRef.current) {
-      setSelectedState(null); // Hide the tooltip when clicking on the empty map space
+      setSelectedState(null); 
     }
   };
   
@@ -89,22 +89,47 @@ const MapComponent = () => {
         width={800}
         height={500}
       >
-        <Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                onClick={(event) => handleStateClick(event, geo)}
-                style={{
-                  default: { fill: "#D6D6DA", outline: "none" },
-                  hover: { fill: "#9C9C9C", outline: "none" },
-                  pressed: { fill: "#E42", outline: "none" },
-                }}
-              />
-            ))
-          }
-        </Geographies>
+<Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
+  {({ geographies }) =>
+    geographies.map((geo) => {
+      const stateName = geo.properties.name;
+      const data = stateData[stateName];
+
+      let baseColor;
+      if (data) {
+        baseColor = data.interactions > 10 ? "#FF0000" : "#00FF00"; // Red for high interactions, green for devices
+      } else {
+        baseColor = "#D6D6DA"; // Default color if no data
+      }
+
+      return (
+        <Geography
+          key={geo.rsmKey}
+          geography={geo}
+          onClick={(event) => handleStateClick(event, geo)}
+          style={{
+            default: { fill: baseColor, outline: "none", transition: "fill 0.3s ease" },
+            hover: {
+              fill: data
+                ? data.interactions > 10
+                  ? "#CC0000" 
+                  : "#00AA00" 
+                : "#B0B0B0", 
+            },
+            pressed: {
+              fill: data
+                ? data.interactions > 10
+                  ? "#990000" 
+                  : "#007700"
+                : "#808080", 
+            },
+          }}
+        />
+      );
+    })
+  } 
+</Geographies>
+
       </ComposableMap>
       {selectedState && (
   <div
