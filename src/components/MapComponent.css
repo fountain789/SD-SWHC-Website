@@ -21,7 +21,7 @@ html, body {
   background: #373d8d; /* Dark blue or any dark color to match the theme */
   color: #ffffff; /* White text for contrast */
   padding: 10px;
-  border: 1px solid #666; /* Adjust color to match the dark theme */
+  border: 2px solid #666; /* Adjust color to match the dark theme */
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 10;
