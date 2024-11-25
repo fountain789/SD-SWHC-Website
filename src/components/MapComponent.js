@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { database, get, ref } from "./firebase.js";
 import { getStateByZip } from "./stateZipRanges.js";
-import "./MapComponent.css";
+import "./MapComponent.css"
 
 const MapComponent = () => {
   const [stateData, setStateData] = useState({});
   const [selectedState, setSelectedState] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const mapContainerRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,7 @@ const MapComponent = () => {
             }
           });
   
-          console.log("Final state data:", stateCounts); // Debugging line
+          console.log("Final state data:", stateCounts); 
           setStateData(stateCounts);
         } else {
           console.log("No data available");
@@ -46,11 +47,27 @@ const MapComponent = () => {
     };
   
     fetchData();
+
+    // Add event listener to detect outside clicks
+    const handleClickOutside = (event) => {
+      if (mapContainerRef.current && !mapContainerRef.current.contains(event.target)) {
+        setSelectedState(null); 
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
-  
-  
-  
-  
+
+  const handleContainerClick = (event) => {
+    if (event.target === mapContainerRef.current) {
+      setSelectedState(null); 
+    }
+  };
+
   const handleStateClick = (event, geo) => {
     console.log("geo.properties:", geo.properties);
     const stateCode = geo.properties.STUSPS || geo.properties.name || geo.properties.state || geo.properties.STATE_ABBR; 
@@ -59,46 +76,86 @@ const MapComponent = () => {
     setTooltipPosition({ x: event.clientX + 15, y: event.clientY + 15 });
   };
   
-  
   return (
-    <div className="map-container">
-      <h2 className="map-title">US Device Map</h2>
+    <div ref={mapContainerRef} className="map-container" onClick={handleContainerClick}>
       <ComposableMap
         projection="geoAlbersUsa"
-        width={800}
-        height={500}
+        width={1000}
+        height={600}
       >
         <Geographies geography="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json">
           {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                onClick={(event) => handleStateClick(event, geo)}
-                style={{
-                  default: { fill: "#D6D6DA", outline: "none" },
-                  hover: { fill: "#F53", outline: "none" },
-                  pressed: { fill: "#E42", outline: "none" },
-                }}
-              />
-            ))
+            geographies.map((geo) => {
+              const stateName = geo.properties.name;
+              const data = stateData[stateName];
+
+              let baseColor;
+              if (data) {
+                baseColor = data.interactions > 10 ? "#FF0000" : "#00FF00"; // Red for high interactions, green for devices
+              } else {
+                baseColor = "#D6D6DA"; // Default color if no data
+              }
+
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  onClick={(event) => handleStateClick(event, geo)}
+                  style={{
+                    default: { fill: baseColor, outline: "none", transition: "fill 0.3s ease" },
+                    hover: {
+                      fill: data
+                        ? data.interactions > 10
+                          ? "#CC0000" 
+                          : "#00AA00" 
+                        : "#B0B0B0", 
+                    },
+                    pressed: {
+                      fill: data
+                        ? data.interactions > 10
+                          ? "#990000" 
+                          : "#007700"
+                        : "#808080", 
+                    },
+                  }}
+                />
+              );
+            })
           }
         </Geographies>
       </ComposableMap>
-      {selectedState && (
-  <div
-    className="tooltip"
-    style={{
-      left: tooltipPosition.x,
-      top: tooltipPosition.y
-    }}
-  >
-    <h3>{selectedState}</h3>
-    <p>Devices: {stateData[selectedState]?.devices ?? "N/A"}</p>
-    <p>Relay Interactions: {stateData[selectedState]?.interactions ?? "N/A"}</p>
-  </div>
-)}
 
+      {/* Tooltip */}
+      {selectedState && (
+        <div
+          className="tooltip"
+          style={{
+            left: tooltipPosition.x,
+            top: tooltipPosition.y
+          }}
+        >
+          <h3>{selectedState}</h3>
+          <p>Devices: {stateData[selectedState]?.devices ?? "N/A"}</p>
+          <p>Relay Interactions: {stateData[selectedState]?.interactions ?? "N/A"}</p>
+        </div>
+      )}
+
+      {/* Legend */}
+      <div className="map-legend">
+        <h4>Legend</h4>
+        <div className="legend-item">
+          <span className="color-box" style={{ backgroundColor: "#FF0000" }}></span>
+          <span>Unstable Grid</span>
+        </div>
+        <div className="legend-item">
+          <span className="color-box" style={{ backgroundColor: "#00FF00" }}></span>
+          <span>Active Devices</span>
+        </div>
+        <div className="legend-item">
+          <span className="color-box" style={{ backgroundColor: "#D6D6DA" }}></span>
+          <span>No Devices in State</span>
+        </div>
+      </div>
 
     </div>
   );
